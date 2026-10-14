@@ -310,3 +310,30 @@ button, input, select, textarea { font: inherit; color: #000; border-radius: 0; 
   .awt-range { width: 150px; }
   .menubar { display: none; }
 }
+
+/* Page two is permanently underneath page one, with 60% horizontal overlap. */
+#form-windows { position: relative; width: 560px; max-width: 100%; }
+#form-windows > #frame { position: relative; z-index: 2; width: 100%; }
+#form-windows.has-second-page { width: 784px; }
+#form-windows.has-second-page > #frame { width: 71.428571%; }
+#second-frame {
+  position: absolute; z-index: 1; top: 32px; left: 28.571429%;
+  width: 71.428571%; transform: rotate(180deg);
+}
+#second-frame[hidden] { display: none; }
+.second-panel { padding: 8px; min-height: 320px; overflow-wrap: anywhere; }
+.second-visible { margin-right: 60%; }
+.second-fields { width: calc(60% - 16px); margin-left: calc(40% + 16px); }
+.second-fields .row { flex-direction: column; align-items: stretch; }
+.second-fields .lbl { width: auto; text-align: left; padding: 0 0 2px; }
+.second-fields .awt-input { width: 100%; }
+.second-panel h2 { font-size: 14px; margin-top: 0; }
+.second-panel .buttons { flex-wrap: wrap; }
+#second-frame .applet-warning { margin-right: 60%; }
+@media (max-width: 600px) {
+  #form-windows.has-second-page > #frame .panel { padding: 8px; }
+  #form-windows.has-second-page .height-wrap { flex-wrap: wrap; }
+  #form-windows.has-second-page .awt-range { max-width: 100%; }
+  #form-windows.has-second-page .sub { gap: 3px; }
+  #form-windows.has-second-page .awt-input.short { max-width: 100%; }
+}

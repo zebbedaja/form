@@ -9,7 +9,7 @@
 
     (function cycle() {
       cancelMode = !cancelMode && Game.trolling();
-      btn.textContent = cancelMode ? "Cancel" : "Submit";
+      btn.textContent = cancelMode ? "Cancel" : "Next";
       setTimeout(cycle, cancelMode ? 600 : 1300);
     })();
   }

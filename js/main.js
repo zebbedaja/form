@@ -8,6 +8,7 @@ var Game = (function () {
   var started = false;
   var won = false;
   var timer = null;
+  var secondPage = false;
 
   function $(id) { return document.getElementById(id); }
 
@@ -101,19 +102,49 @@ var Game = (function () {
 
   function wireKonami() {
     var seq = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+    var reversed = seq.slice().reverse();
     var pos = 0;
+    var lastPage = secondPage;
     document.addEventListener("keydown", function (e) {
-      pos = e.key === seq[pos] ? pos + 1 : (e.key === seq[0] ? 1 : 0);
-      if (pos === seq.length) {
+      if (won || Dialog.isOpen()) { pos = 0; return; }
+      if (lastPage !== secondPage) { pos = 0; lastPage = secondPage; }
+      var activeSeq = secondPage ? reversed : seq;
+      pos = e.key === activeSeq[pos] ? pos + 1 : (e.key === activeSeq[0] ? 1 : 0);
+      if (pos === activeSeq.length) {
         pos = 0;
-        fields.forEach(function (f) { if (f.fill) f.fill(); });
+        fields.forEach(function (f) {
+          if ((f.page === 2) === secondPage && f.fill) f.fill();
+        });
         status("Cheat code accepted. Shame.");
       }
     });
   }
 
+  function back() {
+    if (won) return;
+    secondPage = false;
+    $("second-frame").hidden = true;
+    $("form-windows").classList.remove("has-second-page");
+    $("form").inert = false;
+    $("f-submit").focus();
+    status("Page 1 of 2.");
+  }
+
   function submit() {
     if (won) return;
+    if (secondPage) {
+      var missing = !$("f-occupation").value.trim() ? "occupation" :
+        (!$("f-city").value.trim() ? "city" : null);
+      if (missing) {
+        attempts++;
+        $("status-attempts").textContent = "Attempts: " + attempts;
+        status("Validation failed.");
+        Dialog.error("Please enter your " + missing + ".");
+        return;
+      }
+      win();
+      return;
+    }
     attempts++;
     $("status-attempts").textContent = "Attempts: " + attempts;
     status("Validating...");
@@ -126,11 +157,19 @@ var Game = (function () {
         return;
       }
     }
-    win();
+    secondPage = true;
+    $("form-windows").classList.add("has-second-page");
+    $("second-frame").hidden = false;
+    $("form").inert = true;
+    $("second-heading").focus();
+    status("Page 2 of 2.");
   }
 
   function win() {
     won = true;
+    $("form").inert = false;
+    $("f-final-submit").disabled = true;
+    $("f-back").disabled = true;
     clearInterval(timer);
     var time = elapsed();
     $("win-name").textContent = $("f-name").value.trim();
@@ -176,7 +215,14 @@ var Game = (function () {
 
   function start() {
     wireChrome();
+    $("f-back").addEventListener("click", back);
+    $("f-final-submit").addEventListener("click", submit);
     wireKonami();
+    $("second-form").addEventListener("submit", function (event) { event.preventDefault(); submit(); });
+    register({ page: 2, fill: function () {
+      $("f-occupation").value = "Applet developer";
+      $("f-city").value = "Berlin";
+    } });
     splash().then(function () {
       started = true;
       startTime = Date.now();

@@ -6,10 +6,12 @@ A game where your goal is to fill out a form. That's it. How hard can it be?
 
 Plain HTML, CSS and JavaScript with no build step. Open `index.html` directly or serve the folder.
 
+The form has two pages. After validation, **Next** opens a second window rotated 180 degrees and permanently behind the original window, with 60% horizontal overlap. Its occupation and city fields are obscured by the first window and can be filled using the keyboard. Use **Back** to edit your details or **Submit** to finish.
+
 ## Testing
 
 - `?debug=1` turns off all the trolls (no evasion, no shuffling, no extra dialogs) and skips the loading screen.
-- The Konami code (↑ ↑ ↓ ↓ ← → ← → B A) fills in every field.
+- The Konami code (↑ ↑ ↓ ↓ ← → ← → B A) fills in page 1. Page 2 requires the reversed sequence (A B → ← → ← ↓ ↓ ↑ ↑) and fills only its own fields.
 
 Browser end-to-end tests require Node.js and Python 3 (for the local static server):
 

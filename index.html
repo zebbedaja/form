@@ -23,6 +23,7 @@
 </div>
 
 <div id="desktop">
+  <div id="form-windows">
   <div class="frame" id="frame">
     <div class="titlebar">
       <span class="title-icon">&#9749;</span>
@@ -147,7 +148,7 @@
       </fieldset>
 
       <div class="buttons">
-        <button type="button" class="awt-btn submit" id="f-submit">Submit</button>
+        <button type="button" class="awt-btn submit" id="f-submit">Next</button>
       </div>
     </form>
 
@@ -157,6 +158,31 @@
       <span class="status-cell" id="status-time">00:00</span>
     </div>
     <div class="applet-warning">Warning: Applet Window</div>
+  </div>
+  <section class="frame" id="second-frame" aria-label="Form page 2" hidden>
+    <div class="titlebar"><span class="title-text">Form - Page 2</span></div>
+    <form class="panel second-panel" id="second-form" novalidate autocomplete="off">
+      <div class="second-visible">
+        <h2 tabindex="-1" id="second-heading">Additional details</h2>
+        <div class="intro">Please fill out the form below. All fields are required.</div>
+      </div>
+      <div class="second-fields">
+        <div class="row">
+          <label class="lbl" for="f-occupation">Occupation:</label>
+          <div class="ctl"><input type="text" id="f-occupation" class="awt-input" spellcheck="false"></div>
+        </div>
+        <div class="row">
+          <label class="lbl" for="f-city">City:</label>
+          <div class="ctl"><input type="text" id="f-city" class="awt-input" spellcheck="false"></div>
+        </div>
+      </div>
+      <div class="buttons second-visible">
+        <button type="button" class="awt-btn" id="f-back">Back</button>
+        <button type="button" class="awt-btn" id="f-final-submit">Submit</button>
+      </div>
+    </form>
+    <div class="applet-warning">Warning: Background Applet Window</div>
+  </section>
   </div>
 </div>
 
